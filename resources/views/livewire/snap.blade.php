@@ -8,7 +8,8 @@
 </head>
 <body>
     <script type="text/javascript">
-        snap.pay(JSON.parse('@json($snapToken)'), {
+        // Ganti parsing yang error-prone dengan syntax biasa yang disetujui Midtrans
+        snap.pay('{{ $snapToken }}', {
             onSuccess: function(result) {
         alert("Payment Successful!");
         fetch("{{ route('checkout.success') }}", {

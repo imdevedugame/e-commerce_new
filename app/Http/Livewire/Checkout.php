@@ -37,8 +37,10 @@ class Checkout extends Component
         ]);
 
         // Data transaksi
+        // Gunakan prefix atau timestamp agar unik di Sandbox Midtrans (mencegah stuck/loading terus karena duplikat order_id dari database lama yang di-reset)
+        $uniqueOrderId = $order->id . '-' . time();
         $transactionDetails = [
-            'order_id' => $order->id,  // Gunakan ID order yang baru dibuat
+            'order_id' => $uniqueOrderId,
             'gross_amount' => (int) str_replace(',', '', Cart::total()), // Total pembayaran
         ];
 
@@ -101,12 +103,14 @@ class Checkout extends Component
         $paymentResult = $request->all();
         \Log::info('Payment Success: ' . json_encode($paymentResult));
     
-        // Get the order ID and transaction status
-        $orderId = $paymentResult['order_id'];
+        // Get the order ID and transaction status (Note: order_id was suffixed with -timestamp)
+        $fullOrderId = $paymentResult['order_id'];
         $transactionStatus = $paymentResult['transaction_status'];
+        
+        $realOrderId = explode('-', $fullOrderId)[0];
     
         // Find the order
-        $order = Order::find($orderId);
+        $order = Order::find($realOrderId);
     
         if ($order && ($transactionStatus == 'capture' || $transactionStatus == 'settlement')) {
             // Update the order status to 'processing' if payment is successful
@@ -180,6 +184,12 @@ class Checkout extends Component
 
         // Ambil Snap Token untuk transaksi
         $snapToken = $this->midtransCheckout();
+        
+        // Jika ada error di Midtrans, akan return RedirectResponse
+        if ($snapToken instanceof \Illuminate\Http\RedirectResponse) {
+            return $snapToken;
+        }
+        
         return view('livewire.snap', ['snapToken' => $snapToken]);
     }
 
