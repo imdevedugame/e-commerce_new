@@ -10,6 +10,7 @@ class BillingDetail extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'user_id',
         'country',
         'billing_address',
         'city',

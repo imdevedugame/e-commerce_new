@@ -24,6 +24,8 @@ use App\Http\Controllers\OrderController;
 
 Route::get('/', [Home::class, 'render'])->name('home');
 
+Route::get('/docs', fn () => view('docs.swagger'))->name('docs');
+
 Route::get('/product/{product_id}', [ProductDetails::class, 'render'])->name('product.details');
 
 Route::post('/add-to-cart', [Cart::class, 'addToCart'])->name('cart.add');
