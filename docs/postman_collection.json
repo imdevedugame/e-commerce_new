@@ -140,6 +140,23 @@
             "header": [{ "key": "Accept", "value": "application/json" }],
             "url": "{{base_url}}/products/{{product_id}}"
           }
+        },
+        {
+          "name": "Import products (CSV, admin only)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{base_url}}/products/import",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "file", "type": "file", "src": "docs/products_import_sample.csv" }
+              ]
+            }
+          }
         }
       ]
     },

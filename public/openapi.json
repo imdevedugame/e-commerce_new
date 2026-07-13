@@ -292,6 +292,48 @@
         }
       }
     },
+    "/products/import": {
+      "post": {
+        "tags": ["Products"],
+        "summary": "Bulk import products from a CSV file",
+        "description": "Admin-only. Upserts products by SKU (creates new, updates existing) and attaches categories by slug. Invalid rows are skipped and reported individually instead of failing the whole file.",
+        "security": [{ "sanctum": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": ["file"],
+                "properties": {
+                  "file": { "type": "string", "format": "binary", "description": "CSV with header row: name, sku, price, quantity required; brief_description, description, old_price, stock_status, image, categories optional (comma-separated slugs)." }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Import completed (per-row errors, if any, are reported without failing the whole file)",
+            "content": { "application/json": { "schema": { "type": "object", "properties": {
+              "message": { "type": "string" },
+              "summary": { "type": "object", "properties": {
+                "created": { "type": "integer" },
+                "updated": { "type": "integer" },
+                "failed": { "type": "integer" }
+              } },
+              "errors": { "type": "array", "items": { "type": "object", "properties": {
+                "row": { "type": "integer" },
+                "errors": { "type": "array", "items": { "type": "string" } }
+              } } }
+            } } } }
+          },
+          "401": { "$ref": "#/components/responses/Unauthenticated" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "422": { "$ref": "#/components/responses/ValidationFailed" }
+        }
+      }
+    },
     "/orders": {
       "get": {
         "tags": ["Orders"],

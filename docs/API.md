@@ -83,6 +83,26 @@ Response:
 ### `GET /products/{id}`
 `404 { "message": "Resource not found." }` if missing.
 
+### `POST /products/import` (admin only)
+Bulk-imports products from a CSV file (`multipart/form-data`, field `file`). Sample template:
+`docs/products_import_sample.csv`.
+
+Required header columns: `name, sku, price, quantity`. Optional: `brief_description,
+description, old_price, stock_status, image, categories` (comma-separated category slugs,
+attached without detaching existing ones).
+
+Behavior: upserts by `sku` (existing SKU → updated, new SKU → created). Invalid rows are
+skipped and reported individually — the rest of the file still imports.
+
+```json
+{
+  "message": "Import completed.",
+  "summary": { "created": 2, "updated": 0, "failed": 0 },
+  "errors": []
+}
+```
+Non-admin → `403`. Missing required header column → `422`.
+
 ## Orders (auth required)
 
 ### `GET /orders`
