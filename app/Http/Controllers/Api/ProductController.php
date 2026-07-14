@@ -42,7 +42,7 @@ class ProductController extends Controller
             default => $query->orderBy('id', 'asc'),
         };
 
-        $perPage = (int) $request->query('per_page', 12);
+        $perPage = (int) $request->query('per_page', 3);
         $perPage = max(1, min($perPage, 50));
 
         $products = $query->paginate($perPage)->appends($request->query());

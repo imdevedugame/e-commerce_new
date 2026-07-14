@@ -50,9 +50,9 @@ Returns the current authenticated user. Without a valid token → `401 Unauthent
 ## Categories
 
 ### `GET /categories`
-Query params: `per_page` (default 15, max 50).
+Query params: `per_page` (default 3, max 50).
 ```json
-{ "data": [ { "id": 1, "name": "Bouquets", "slug": "bouquets" } ], "meta": { "current_page": 1, "last_page": 1, "per_page": 15, "total": 4 } }
+{ "data": [ { "id": 1, "name": "Bouquets", "slug": "bouquets" } ], "meta": { "current_page": 1, "last_page": 2, "per_page": 3, "total": 4 } }
 ```
 
 ### `GET /categories/{id}`
@@ -65,7 +65,7 @@ Public, no auth required. Supports pagination + filtering + sorting:
 
 | Param | Example | Effect |
 |---|---|---|
-| `per_page` | `12` | Page size (max 50) |
+| `per_page` | `3` (default) | Page size (max 50) |
 | `category` | `bouquets` | Filter by category slug |
 | `search` | `rose` | Search name/description |
 | `min_price` / `max_price` | `10` / `100` | Price range filter |
@@ -76,7 +76,7 @@ Response:
 {
   "data": [ { "id": 1, "name": "...", "price": 49.99, "old_price": 59.99, "sku": "SKU-0001",
               "stock_status": "instock", "quantity": 12, "image": "...", "images": [], "categories": [...] } ],
-  "meta": { "current_page": 1, "last_page": 3, "per_page": 12, "total": 30 }
+  "meta": { "current_page": 1, "last_page": 10, "per_page": 3, "total": 30 }
 }
 ```
 

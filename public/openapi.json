@@ -229,7 +229,7 @@
         "tags": ["Categories"],
         "summary": "List categories",
         "parameters": [
-          { "name": "per_page", "in": "query", "schema": { "type": "integer", "default": 15, "maximum": 50 } }
+          { "name": "per_page", "in": "query", "schema": { "type": "integer", "default": 3, "maximum": 50 } }
         ],
         "responses": {
           "200": {
@@ -261,7 +261,7 @@
         "summary": "List products",
         "description": "Public endpoint. Supports pagination, search, category/price filtering and sorting.",
         "parameters": [
-          { "name": "per_page", "in": "query", "schema": { "type": "integer", "default": 12, "maximum": 50 } },
+          { "name": "per_page", "in": "query", "schema": { "type": "integer", "default": 3, "maximum": 50 } },
           { "name": "category", "in": "query", "description": "Category slug", "schema": { "type": "string" }, "example": "mawar" },
           { "name": "search", "in": "query", "description": "Search in name/description", "schema": { "type": "string" } },
           { "name": "min_price", "in": "query", "schema": { "type": "number" } },
@@ -341,7 +341,7 @@
         "description": "Admins see all orders; regular users only see their own.",
         "security": [{ "sanctum": [] }],
         "parameters": [
-          { "name": "per_page", "in": "query", "schema": { "type": "integer", "default": 10, "maximum": 50 } },
+          { "name": "per_page", "in": "query", "schema": { "type": "integer", "default": 3, "maximum": 50 } },
           { "name": "status", "in": "query", "schema": { "type": "string", "enum": ["pending", "processing", "completed", "canceled"] } }
         ],
         "responses": {

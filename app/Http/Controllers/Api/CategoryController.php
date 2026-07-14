@@ -12,7 +12,7 @@ class CategoryController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
-        $perPage = (int) $request->query('per_page', 15);
+        $perPage = (int) $request->query('per_page', 3);
         $perPage = max(1, min($perPage, 50));
 
         $categories = Category::query()->orderBy('name')->paginate($perPage);
