@@ -18,3 +18,4 @@ yarn-error.log
 /.idea
 /.vscode
 /Laravel-9-E-Commerce
+.DS_Store
